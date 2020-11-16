@@ -1,8 +1,9 @@
+/* eslint-disable linebreak-style */
 import React, { useState, useImperativeHandle } from 'react'
 
 const Togglable = React.forwardRef((props, ref) => {
   const [visible, setVisible] = useState(false)
-
+  Togglable.displayName = 'Togglable'
   const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
 
