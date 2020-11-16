@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef  } from 'react'
+/* eslint-disable linebreak-style */
+import React, { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
@@ -14,7 +15,6 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
-  //async await !!!
   useEffect(() => {
     blogService
       .getAll()
@@ -92,7 +92,7 @@ const App = () => {
     <form onSubmit={handleLogin}>
       <div>
         username
-          <input
+        <input
           type="text"
           value={username}
           name="Username"
@@ -101,7 +101,7 @@ const App = () => {
       </div>
       <div>
         password
-          <input
+        <input
           type="password"
           value={password}
           name="Password"
