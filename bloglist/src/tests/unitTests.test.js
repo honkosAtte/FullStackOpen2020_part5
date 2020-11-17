@@ -67,6 +67,11 @@ test('Blog renders all the details when show details button pressed', () => {
         'testUrl'
       )
 
+      expect(component.container).toHaveTextContent(
+        'testUserName'
+      )
+
+
   })
 
   test('clicking the LikeButton twice calls event handler twice', async () => {
