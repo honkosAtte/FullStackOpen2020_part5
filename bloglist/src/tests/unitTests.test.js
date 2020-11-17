@@ -4,6 +4,7 @@ import { render, fireEvent } from '@testing-library/react'
 import { prettyDOM } from '@testing-library/dom' 
 import Blog from '../components/Blog'
 import LikeButton from '../components/LikeButton'
+import BlogForm from '../components/BlogForm'
 
 test('Blog renders author, title, but not likes', () => {
   const blog = {
@@ -86,7 +87,43 @@ test('Blog renders all the details when show details button pressed', () => {
     fireEvent.click(button)
     fireEvent.click(button)
 
-  
     expect(mockHandler.mock.calls).toHaveLength(2)
   })
   
+
+  test('BlogForm works', async () => {
+    const mockHandler = jest.fn()
+  
+    const component = render(
+        <BlogForm createBlog={mockHandler} />
+        )
+
+        const author = component.container.querySelector('#author')
+        const title = component.container.querySelector('#title')
+        const url = component.container.querySelector('#url')
+
+        const form = component.container.querySelector('form')
+      
+        fireEvent.change(title, { 
+          target: { value: 'testTitle' } 
+        })
+        fireEvent.change(author, { 
+            target: { value: 'testAuthor' } 
+          })
+
+          fireEvent.change(url, { 
+            target: { value: 'testUrl' } 
+          })
+  
+          
+
+
+        fireEvent.submit(form)
+      
+        console.log('mokkigha',mockHandler.mock.calls[0][0])
+        expect(mockHandler.mock.calls).toHaveLength(1)
+
+        expect(mockHandler.mock.calls[0][0]).toStrictEqual({title: 'testTitle', author: 'testAuthor', url: 'testUrl'})
+
+  
+  })
