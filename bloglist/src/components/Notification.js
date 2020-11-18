@@ -8,7 +8,9 @@ const Notification = ({ message }) => {
       {
         message === null ?
           <div></div> :
-          <div className="error">
+          <div 
+          id="error"
+          className="error">
             {message}
           </div>
       }
