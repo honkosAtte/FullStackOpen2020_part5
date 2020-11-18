@@ -35,6 +35,26 @@ const App = () => {
   const blogFormRef = useRef()
 
 
+  const deleteBlog = id => {
+    try {
+      blogService.deleteOne(id).then(x => setBlogs(blogs.filter(row => row.id !== id)))
+      setErrorMessage(`Item deleted!`)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+
+    } catch (excepton) {
+      setErrorMessage('You do not have permission to delete this')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+    
+
+    
+  
+  }
+
   const addBlog = (blogObject) => {
     blogFormRef.current.toggleVisibility()
     blogService
@@ -78,7 +98,7 @@ const App = () => {
     setUser(null)
     setUsername('')
     setPassword('')
-
+    blogService.setToken(null)
     setErrorMessage('logged out')
     setTimeout(() => {
       setErrorMessage(null)
@@ -125,7 +145,7 @@ const App = () => {
         loginForm() :
         <div>
           <p>{user.name} logged in</p>
-          <button onClick={handleLogout}>logout</button>
+          <button id='logout' onClick={handleLogout}>logout</button>
           <Togglable buttonLabel='new note' ref={blogFormRef} >
             <BlogForm createBlog={addBlog} />
           </Togglable>
@@ -138,6 +158,7 @@ const App = () => {
           <Blog
             key={blog.id}
             blog={blog}
+            deleteBlog={deleteBlog}
           />
         )}
       </ul>

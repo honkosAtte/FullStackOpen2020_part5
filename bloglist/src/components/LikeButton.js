@@ -1,5 +1,5 @@
-import React, { useState }from 'react'
+import React from 'react'
 
-const LikeButton = ({clickHandler}) => <button onClick={clickHandler}>like</button>
+const LikeButton = ({clickHandler}) => <button id='likeButton' onClick={clickHandler}>like</button>
 
 export default LikeButton
