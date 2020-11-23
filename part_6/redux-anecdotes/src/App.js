@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { addVote } from './reducers/anecdoteReducer'
-
+import NewNotification from './components/newNotification'
 
 
 
@@ -17,6 +17,8 @@ const App = () => {
   return (
     <div>
       <h2>Anecdotes</h2>
+      <NewNotification />
+
       {anecdotes.map(anecdote =>
         <div key={anecdote.id}>
           <div>
@@ -28,11 +30,11 @@ const App = () => {
           </div>
         </div>
       )}
-      <h2>create new</h2>
-      <form>
+      {/* <h2>create new</h2> */}
+      {/* <form>
         <div><input /></div>
         <button>create</button>
-      </form>
+      </form> */}
     </div>
   )
 }

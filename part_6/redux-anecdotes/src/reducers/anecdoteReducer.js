@@ -23,21 +23,32 @@ const reducer = (state = initialState, action) => {
   console.log('state now: ', state)
   console.log('action', action)
   switch(action.type) {
+    case 'NEW_NOTIFICATION':
+      return [...state, action.data]
     case 'NEW_VOTE':
       const id = action.data.id
       const anecdoteToChange = state.find(n => n.id === id)
       const changedAnecdote = { 
         ...anecdoteToChange, votes: anecdoteToChange.votes +1 } 
-          
 
       return state.map(anecdote =>
-        anecdote.id !== id ? anecdote : changedAnecdote 
-      )
+        anecdote.id !== id ? anecdote : changedAnecdote)
+      
     default:
       return state
   }
 }
 
+export const createNotification = (content) => {
+  return {
+    type: 'NEW_NOTIFICATION',
+    data: {
+      content,
+      id: getId(),
+      votes: 0
+    }
+  }
+}
 
 export const addVote = (id) => {
   return {
@@ -45,5 +56,7 @@ export const addVote = (id) => {
     data: { id }
   }
 }
+
+
 
 export default reducer
