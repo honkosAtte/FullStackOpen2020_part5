@@ -23,7 +23,7 @@ const reducer = (state = initialState, action) => {
   console.log('state now: ', state)
   console.log('action', action)
   switch(action.type) {
-    case 'NEW_NOTIFICATION':
+    case 'NEW_ANECDOTE':
       return [...state, action.data]
     case 'NEW_VOTE':
       const id = action.data.id
@@ -39,9 +39,9 @@ const reducer = (state = initialState, action) => {
   }
 }
 
-export const createNotification = (content) => {
+export const createAnecdote = (content) => {
   return {
-    type: 'NEW_NOTIFICATION',
+    type: 'NEW_ANECDOTE',
     data: {
       content,
       id: getId(),
