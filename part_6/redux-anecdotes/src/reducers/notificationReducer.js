@@ -5,9 +5,9 @@ const notificationReducer = (state =  initialNotificiationState.message, action)
     //console.log('action', action)
     switch(action.type) {
       case 'NEW_NOTIFICATION':
-        return {...state.notification, message : `You created "${action.data}"`}
+        return {...state.notification, message : action.data}
       case 'NEW_VOTE_NOTIFICATION':
-        return {...state.notification, message : `You voted "${action.data.content}"`}
+        return {...state.notification, message : action.data.content}
       default:
         return state
     }
@@ -18,7 +18,7 @@ const notificationReducer = (state =  initialNotificiationState.message, action)
     return {
       type: 'NEW_NOTIFICATION',
       data:  content 
-    }
+    } 
   }
 
   export const addVoteNotification= (notification) => {
