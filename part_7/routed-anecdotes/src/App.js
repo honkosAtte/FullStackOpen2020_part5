@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import {
   Switch, Route, Link, useRouteMatch, Redirect
 } from "react-router-dom"
+import  { useField } from './hooks'
 
 const Menu = () => {
   const padding = {
@@ -68,17 +69,30 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
+
+  const { reset : contentReset, ...content } = useField('text')
+  const { reset : authorReset, ...author } = useField('text')
+  const { reset : infoReset, ...info } = useField('text')
+
+
   const [formSubmitted, setFormSubmitted] = useState(false)
+
+  
+  const handleReset = e => {
+    e.preventDefault()
+    contentReset(e)
+    authorReset(e)
+    infoReset(e)
+
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    console.log(content)
     props.addNew({
-      content,
-      author,
-      info,
+      content : content.value,
+      author: author.value,
+      info : info.value,
       votes: 0
     })
     setFormSubmitted(true)
@@ -92,20 +106,20 @@ const CreateNew = (props) => {
     formSubmitted ?  <Redirect to='/' /> :
     <div>
       <h2>create a new anecdote</h2>
-      <form onSubmit={handleSubmit}>
+      <form>
         <div>
           content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          <input {...content}/>
         </div>
         <div>
           author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input {...author}/>
         </div>
         <div>
           url for more info
-          <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
+          <input {...info} />
         </div>
-        <button>create</button>
+        <button onClick={handleSubmit}>create</button><button onClick={handleReset}>reset</button>
       </form>
     </div>
   )
