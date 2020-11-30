@@ -83,7 +83,6 @@ const CreateNew = (props) => {
     contentReset(e)
     authorReset(e)
     infoReset(e)
-
   }
 
   const handleSubmit = (e) => {
@@ -96,7 +95,7 @@ const CreateNew = (props) => {
       votes: 0
     })
     setFormSubmitted(true)
-    props.setNotification(`a new anecdote "${content}" created`)
+    props.setNotification(`a new anecdote "${content.value}" created`)
     setTimeout(() => {
       props.setNotification('')
     }, 10000);
