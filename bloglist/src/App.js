@@ -6,14 +6,17 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
+import { useDispatch } from 'react-redux'
+import { setNotification } from './reducers/notificationReducer'
 
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const dispatch = useDispatch()
+
 
   useEffect(() => {
     blogService
@@ -38,16 +41,10 @@ const App = () => {
   const deleteBlog = id => {
     try {
       blogService.deleteOne(id).then(x => setBlogs(blogs.filter(row => row.id !== id)))
-      setErrorMessage(`Item deleted!`)
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
-
+      
+      dispatch(setNotification('Item deleted!'))
     } catch (excepton) {
-      setErrorMessage('You do not have permission to delete this')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      dispatch(setNotification('You do not have permission to delete this'))
     }
     
 
@@ -62,10 +59,7 @@ const App = () => {
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
       })
-    setErrorMessage(`Blog with title ${blogObject.title} created!`)
-    setTimeout(() => {
-      setErrorMessage(null)
-    }, 5000)
+      dispatch(setNotification(`Blog with title ${blogObject.title} created!`))
   }
 
   const handleLogin = async (event) => {
@@ -84,10 +78,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('wrong credentials')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      dispatch(setNotification('wrong credentials'))
     }
   }
 
@@ -99,11 +90,7 @@ const App = () => {
     setUsername('')
     setPassword('')
     blogService.setToken(null)
-    setErrorMessage('logged out')
-    setTimeout(() => {
-      setErrorMessage(null)
-    }, 5000)
-
+    dispatch(setNotification('logged out'))
   }
 
 
@@ -139,7 +126,7 @@ const App = () => {
   return (
     <div>
       <h1>Blogs</h1>
-      <Notification message={errorMessage} />
+      <Notification />
 
       {user === null ?
         loginForm() :

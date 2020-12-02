@@ -1,17 +1,19 @@
-/* eslint-disable linebreak-style */
-
 import React from 'react'
+import { useSelector } from 'react-redux'
 
-const Notification = ({ message }) => {
+
+const Notification = () => {
+  const notification = useSelector(state => state.notification)
+  console.log(' Hello from notification', notification)
   return (
     <div>
       {
-        message === null ?
+        notification.message === null ?
           <div></div> :
           <div 
           id="error"
           className="error">
-            {message}
+            {notification.message}
           </div>
       }
     </div>
