@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
+import Users from './components/Users'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import BlogForm from './components/BlogForm'
@@ -9,6 +10,11 @@ import Togglable from './components/Togglable'
 import { useDispatch, useSelector } from 'react-redux'
 import { setNotification } from './reducers/notificationReducer'
 import { initializeBlogs, addNewBlogREDUX as addNewBlog } from './reducers/blogReducer'
+import { initializeUsers } from './reducers/userReducer'
+import {
+  Switch, Route, Link, useRouteMatch, Redirect
+} from "react-router-dom"
+
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -23,6 +29,9 @@ const App = () => {
     dispatch(initializeBlogs()) 
   },[dispatch]) 
 
+  useEffect(() => {
+    dispatch(initializeUsers()) 
+  },[dispatch]) 
   // useEffect(() => {
   //   blogService
   //     .getAll()
@@ -150,6 +159,11 @@ const App = () => {
           />
         )}
       </ul>
+<Switch>
+  <Route path='/users'>
+<Users/>
+  </Route>
+</Switch>
 
     </div>
   )
