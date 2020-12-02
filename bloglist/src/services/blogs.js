@@ -13,7 +13,8 @@ const getAll = async () => {
   return response.data
 }
 
-const create = async newObject => {
+const create = async (newObject) => {
+  console.log('create functon sisällä')
   const config = {
     headers: { Authorization: token },
   }
