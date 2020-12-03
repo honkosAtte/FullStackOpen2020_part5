@@ -6,6 +6,14 @@ const blogReducer = (state = [], action) => {
     switch(action.type) {
       case 'NEW_BLOG':
         return [...state, action.data]
+      case 'NEW_BLOG_COMMENT':
+        const blogid = action.data.blogId
+        const blogToChange1 = state.find(n => n.id === blogid.toString())
+        const changedBlog1 = { 
+          ...blogToChange1, comments: blogToChange1.comments.concat(action.data.newComment) } 
+
+        return state.map(blog =>
+          blog.id !== blogid ? blog : changedBlog1) //Tämä ei ole vielä valmis, pitää refreshata selain että toimii
       case 'INIT_BLOGS':
         return action.data
       case 'NEW_LIKE':
@@ -32,6 +40,15 @@ export const addNewBlogREDUX = (newBlog) => {
   }
 }
 
+export const addNewBlogComment = (newBlog, id) => {
+  return async dispatch => {
+  const blogComment = await blogService.createComment(newBlog, id)
+  dispatch({
+    type: 'NEW_BLOG_COMMENT',
+    data: {newComment: blogComment, blogId: id}
+  })
+}
+}
 
 
 export const initializeBlogs = () => {

@@ -58,6 +58,7 @@ const App = () => {
 
 
   const deleteBlog = id => {
+    //TODO: move state to redux
     try {
       blogService.deleteOne(id).then(x => setBlogs(blogs.filter(row => row.id !== id)))
       

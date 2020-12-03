@@ -1,10 +1,11 @@
 /* eslint-disable linebreak-style */
-import React, { useState }from 'react'
-import LikeButton from './LikeButton'
+import React from 'react'
 import DeleteButton from './DeleteButton'
 import {
   Link
 } from "react-router-dom"
+
+
 
 const Blog = ({ blog, deleteBlog }) => {
 

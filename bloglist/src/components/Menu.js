@@ -1,6 +1,6 @@
-import React, { useState }from 'react'
+import React from 'react'
 import {
-    Switch, Route, Link, useRouteMatch, Redirect
+    Link
   } from "react-router-dom"
 
 const Menu = () => {
