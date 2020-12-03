@@ -14,6 +14,7 @@ import { initializeUsers } from './reducers/userReducer'
 import {
   Switch, Route, Link, useRouteMatch, Redirect
 } from "react-router-dom"
+import UserDetails from './components/UserDetails'
 
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
   const [user, setUser] = useState(null)
   const dispatch = useDispatch()
   const blogsFromRedux = useSelector(state => state.blogs)
+  const usersFromRedux = useSelector(state => state.users)
 
 
   useEffect(() => {
@@ -32,13 +34,6 @@ const App = () => {
   useEffect(() => {
     dispatch(initializeUsers()) 
   },[dispatch]) 
-  // useEffect(() => {
-  //   blogService
-  //     .getAll()
-  //     .then(initialBlogs => {
-  //       setBlogs(initialBlogs)
-  //     })
-  // }, [])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -50,7 +45,13 @@ const App = () => {
   }, [])
 
   const blogFormRef = useRef()
+  
+  const match = useRouteMatch('/users/:id')
 
+  
+  const userById = (id) => usersFromRedux.find(a => a.id === id)
+  const detailedUser = match ? userById(match.params.id.toString()) : null
+  
 
   const deleteBlog = id => {
     try {
@@ -60,10 +61,6 @@ const App = () => {
     } catch (excepton) {
       dispatch(setNotification('You do not have permission to delete this'))
     }
-    
-
-    
-  
   }
 
   const addBlog = (blogObject) => {
@@ -160,6 +157,9 @@ const App = () => {
         )}
       </ul>
 <Switch>
+  <Route path='/users/:id'>
+        <UserDetails detailedUser={detailedUser}/>
+  </Route>
   <Route path='/users'>
 <Users/>
   </Route>
