@@ -12,9 +12,11 @@ import { setNotification } from './reducers/notificationReducer'
 import { initializeBlogs, addNewBlogREDUX as addNewBlog } from './reducers/blogReducer'
 import { initializeUsers } from './reducers/userReducer'
 import {
-  Switch, Route, Link, useRouteMatch, Redirect
+  Switch, Route, useRouteMatch
 } from "react-router-dom"
 import UserDetails from './components/UserDetails'
+import BlogDetails from './components/BlogDetails'
+import Menu from './components/Menu'
 
 
 const App = () => {
@@ -46,12 +48,14 @@ const App = () => {
 
   const blogFormRef = useRef()
   
-  const match = useRouteMatch('/users/:id')
-
-  
+  const userMatch = useRouteMatch('/users/:id')
   const userById = (id) => usersFromRedux.find(a => a.id === id)
-  const detailedUser = match ? userById(match.params.id.toString()) : null
+  const detailedUser = userMatch ? userById(userMatch.params.id.toString()) : null
   
+  const blogMatch = useRouteMatch('/blogs/:id')
+  const blogById = (id) => blogsFromRedux.find(a => a.id === id)
+  const detailedBlog = blogMatch ? blogById(blogMatch.params.id.toString()) : null
+
 
   const deleteBlog = id => {
     try {
@@ -134,6 +138,7 @@ const App = () => {
     <div>
       <h1>Blogs</h1>
       <Notification />
+      <Menu />
 
       {user === null ?
         loginForm() :
@@ -145,9 +150,19 @@ const App = () => {
           </Togglable>
         </div>
       }
-
       <br />
-      <ul>
+<Switch>
+<Route path='/blogs/:id'>
+        <BlogDetails detailedBlog={detailedBlog}/>
+  </Route>
+  <Route path='/users/:id'>
+        <UserDetails detailedUser={detailedUser}/>
+  </Route>
+  <Route path='/users'>
+<Users/>
+  </Route>
+  <Route path='/'>
+  <ul>
         {blogsFromRedux.map((blog) =>
           <Blog
             key={blog.id}
@@ -156,13 +171,7 @@ const App = () => {
           />
         )}
       </ul>
-<Switch>
-  <Route path='/users/:id'>
-        <UserDetails detailedUser={detailedUser}/>
-  </Route>
-  <Route path='/users'>
-<Users/>
-  </Route>
+</Route>
 </Switch>
 
     </div>
