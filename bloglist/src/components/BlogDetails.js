@@ -1,16 +1,30 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { setNotification } from '../reducers/notificationReducer'
 import { setDeleteBlog, addNewLikeForBlog } from '../reducers/blogReducer'
+import { Redirect } from "react-router-dom"
+import { addNewBlogComment } from '../reducers/blogReducer'
+import styled from 'styled-components'
 
-import {
-    Redirect
-  } from "react-router-dom"
-  import { addNewBlogComment } from '../reducers/blogReducer'
+const Button = styled.button`
+  background: Cyan;
+  font-size: 3em;
+  margin: 1em;
+  padding: 0.25em 1em;
+  border: 2px solid Orange;
+  border-radius: 7px;
+`
 
+const Input = styled.input`
+  margin: 0.25em;
+  background: Cyan;
+  font-size: 3em;
+`
 
   const Deleteblog = ({id}) => 
   {      
+    const currentUserFromRedux = useSelector(state => state.currentUser)
+
       const dispatch = useDispatch()
   
       const handleDelete = (event) => {
@@ -20,7 +34,10 @@ import {
       } 
   
         return (
-              <button id='deleteBlog' onClick={handleDelete}>delete</button>
+          
+            currentUserFromRedux === null ? null :
+              <Button id='deleteBlog' onClick={handleDelete}>delete</Button>
+            
               )
   
   }
@@ -34,7 +51,7 @@ import {
       } 
   
         return (
-              <button id='likeBlog' onClick={handleLike}>like</button>
+              <Button id='likeBlog' onClick={handleLike}>like</Button>
               )
   
   }
@@ -48,10 +65,18 @@ const BlogCommentForm = ({id}) =>
     const handleCommentChange = (event) => {
       setNewComment(event.target.value)
     }
-    const addNewComment = (event) => {
+    const addNewComment = (event) => { 
+      let kommentti = '_' 
+      if (newComment === '') {
+      window.alert(`An empty comment will be displayed as _`)
+      }
       event.preventDefault()
+      if (newComment !== '')
+      {
+        kommentti = newComment
+      }
       addBlogCommentDispatch({
-        comment: newComment,
+        comment: kommentti,
         id: id
       }, id)
       setNewComment('')
@@ -59,13 +84,15 @@ const BlogCommentForm = ({id}) =>
   
     const addBlogCommentDispatch = (comment, id) => {
         dispatch(addNewBlogComment(comment, id))
-        dispatch(setNotification(`Blogcomment with title ${comment} created!`))
+        dispatch(setNotification(`New blogcomment with title created!`))
       }
 
       return (
             <form onSubmit={addNewComment}>
-            <input id='comment' value={newComment} onChange={handleCommentChange} />
-            <button id='submitComment' type='submit'>send new comment</button>
+            <Input id='comment' value={newComment} onChange={handleCommentChange} />
+            
+            <Button id='submitComment' type='submit'>send new comment</Button>
+            
             </form>       
             )
 
@@ -80,8 +107,8 @@ const BlogDetails = ({ detailedBlog }) =>
     dispatch(setNotification('Blog not found or deleted'))
     return <Redirect to='/' />
 
-}
-  return (
+}  
+return (
   <div>
     <h1>{detailedBlog.title}</h1>
     <p>url {detailedBlog.url}</p>
@@ -89,7 +116,7 @@ const BlogDetails = ({ detailedBlog }) =>
     <p>added by {detailedBlog.user.name}</p>
     <BlogCommentForm id={detailedBlog.id}/>
     <h2>comments:</h2>
-  {detailedBlog.comments.map(c => <ul key={c.id}>{c.comment}</ul>)}
+  {detailedBlog.comments.length !== 0 ? detailedBlog.comments.map(c => <li key={c.id}>{c.comment}</li>) : null}
   </div>
 )}
 

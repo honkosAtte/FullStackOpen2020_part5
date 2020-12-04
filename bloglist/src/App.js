@@ -18,7 +18,33 @@ import {
 import UserDetails from './components/UserDetails'
 import BlogDetails from './components/BlogDetails'
 import Menu from './components/Menu'
+import styled from 'styled-components'
 
+
+//styled components
+const Page = styled.div`
+  padding: 2em;
+  background: yellow;
+`
+
+const Navigation = styled.div`
+  background: pink;
+  padding: 2em;
+`
+
+const Footer = styled.div`
+  background: cyan;
+  padding: 2em;
+  margin-top: 2em;
+`
+const Button = styled.button`
+  background: Cyan;
+  font-size: 1em;
+  margin: 1em;
+  padding: 0.25em 1em;
+  border: 2px solid Orange;
+  border-radius: 100px;
+`
 
 const App = () => {
   const [username, setUsername] = useState('')
@@ -39,7 +65,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(initializeCurrentUser()) 
-  }, [])
+  }, [dispatch])
 
   const blogFormRef = useRef()
   
@@ -106,23 +132,25 @@ const App = () => {
           onChange={({ target }) => setPassword(target.value)}
         />
       </div>
-      <button 
+      <Button 
       id="login-button"
-      type="submit">login</button>
+      type="submit">login</Button>
     </form>
   )
 
   return (
+    <Page>
     <div>
       <h1>Blogs</h1>
       <Notification />
+      <Navigation>
       <Menu />
-
+      </Navigation>
       {currentUserFromRedux === null ?
         loginForm() :
         <div>
           <p>{currentUserFromRedux.name} logged in</p>
-          <button id='logout' onClick={handleLogout}>logout</button>
+          <Button id='logout' onClick={handleLogout}>logout</Button>
           <Togglable buttonLabel='new note' ref={blogFormRef} >
             <BlogForm createBlog={addBlog} />
           </Togglable>
@@ -152,6 +180,10 @@ const App = () => {
 </Switch>
 
     </div>
+    <Footer>        
+      <em>Blog app, 2020</em>
+      </Footer>
+    </Page>
   )
 }
 

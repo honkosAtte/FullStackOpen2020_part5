@@ -1,4 +1,3 @@
-import userService from '../services/users'
 import blogService from '../services/blogs'
 
 const currentUserReducer = (state = null, action) => {

@@ -1,12 +1,17 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import styled from 'styled-components'
 
+const NotificationWrapper = styled.div`
+  padding: 2em;
+  background: magenta;
+  text: red
+`
 
 const Notification = () => {
   const notification = useSelector(state => state.notification)
-  console.log(' Hello from notification', notification)
   return (
-    <div>
+    <NotificationWrapper>
       {
         notification.message === null ?
           <div></div> :
@@ -16,7 +21,7 @@ const Notification = () => {
             {notification.message}
           </div>
       }
-    </div>
+    </NotificationWrapper>
   )
 }
 
