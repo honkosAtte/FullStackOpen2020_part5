@@ -1,17 +1,17 @@
 /* eslint-disable linebreak-style */
 import React from 'react'
-import DeleteButton from './DeleteButton'
+import { useDispatch } from 'react-redux'
 import {
   Link
 } from "react-router-dom"
 
 
 
-const Blog = ({ blog, deleteBlog }) => {
+const Blog = ({ blog }) => {
 
 return (
   <div>   
-     {<p><Link to={`/blogs/${blog.id}`}>{blog.title}</Link><DeleteButton clickHandler={deleteBlog} id={blog.id}/></p> }
+     {<p><Link to={`/blogs/${blog.id}`}>{blog.title}</Link></p> }
    
    
   </div>

@@ -1,11 +1,41 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { setNotification } from '../reducers/notificationReducer'
+import { setDeleteBlog, addNewLikeForBlog } from '../reducers/blogReducer'
+
 import {
     Redirect
   } from "react-router-dom"
   import { addNewBlogComment } from '../reducers/blogReducer'
 
+
+  const Deleteblog = ({id}) => 
+  {      
+      const dispatch = useDispatch()
+  
+      const handleDelete = (event) => {
+        dispatch(setDeleteBlog(id))
+      } 
+  
+        return (
+              <button id='deleteBlog' onClick={handleDelete}>delete</button>
+              )
+  
+  }
+
+  const LikeBlog = ({detailedBlog}) => 
+  {      
+      const dispatch = useDispatch()
+  
+      const handleLike = (event) => {
+        dispatch(addNewLikeForBlog(detailedBlog, detailedBlog.id))
+      } 
+  
+        return (
+              <button id='likeBlog' onClick={handleLike}>like</button>
+              )
+  
+  }
 
 const BlogCommentForm = ({id}) => 
 {      
@@ -45,7 +75,7 @@ const BlogDetails = ({ detailedBlog }) =>
 
   const dispatch = useDispatch()
   if (detailedBlog === undefined || detailedBlog === null) {
-    dispatch(setNotification('Blog not found'))
+    dispatch(setNotification('Blog not found or deleted'))
     return <Redirect to='/' />
 
 }
@@ -53,11 +83,11 @@ const BlogDetails = ({ detailedBlog }) =>
   <div>
     <h1>{detailedBlog.title}</h1>
     <p>url {detailedBlog.url}</p>
-    <p>{detailedBlog.likes} likes <button>like</button></p>
+    <p>{detailedBlog.likes} likes <LikeBlog detailedBlog={detailedBlog}/></p><Deleteblog id={detailedBlog.id}/>
     <p>added by {detailedBlog.user.name}</p>
     <BlogCommentForm id={detailedBlog.id}/>
     <h2>comments:</h2>
-  {detailedBlog.comments.map(c => <ul key={c}>{c.comment}</ul>)}
+  {detailedBlog.comments.map(c => <ul key={c.id}>{c.comment}</ul>)}
   </div>
 )}
 

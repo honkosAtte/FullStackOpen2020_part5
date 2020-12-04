@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setNotification } from './reducers/notificationReducer'
 import { initializeBlogs, addNewBlogREDUX as addNewBlog } from './reducers/blogReducer'
 import { initializeUsers } from './reducers/userReducer'
+import { initializeCurrentUser, loginCurrentUser, logoutCurrentUser } from './reducers/currentUserReducer'
 import {
   Switch, Route, useRouteMatch
 } from "react-router-dom"
@@ -20,13 +21,12 @@ import Menu from './components/Menu'
 
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
   const dispatch = useDispatch()
   const blogsFromRedux = useSelector(state => state.blogs)
   const usersFromRedux = useSelector(state => state.users)
+  const currentUserFromRedux = useSelector(state => state.currentUser)
 
 
   useEffect(() => {
@@ -38,12 +38,7 @@ const App = () => {
   },[dispatch]) 
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
-    }
+    dispatch(initializeCurrentUser()) 
   }, [])
 
   const blogFormRef = useRef()
@@ -57,17 +52,7 @@ const App = () => {
   const detailedBlog = blogMatch ? blogById(blogMatch.params.id.toString()) : null
 
 
-  const deleteBlog = id => {
-    //TODO: move state to redux
-    try {
-      blogService.deleteOne(id).then(x => setBlogs(blogs.filter(row => row.id !== id)))
-      
-      dispatch(setNotification('Item deleted!'))
-    } catch (excepton) {
-      dispatch(setNotification('You do not have permission to delete this'))
-    }
-  }
-
+  
   const addBlog = (blogObject) => {
     dispatch(addNewBlog(blogObject))
     blogFormRef.current.toggleVisibility()
@@ -80,13 +65,7 @@ const App = () => {
       const user = await loginService.login({
         username, password,
       })
-
-      window.localStorage.setItem(
-        'loggedBlogappUser', JSON.stringify(user)
-      )
-
-      blogService.setToken(user.token)
-      setUser(user)
+      dispatch(loginCurrentUser(user)) 
       setUsername('')
       setPassword('')
     } catch (exception) {
@@ -96,9 +75,7 @@ const App = () => {
 
   const handleLogout = async (event) => {
     event.preventDefault()
-
-    window.localStorage.removeItem('loggedBlogappUser')
-    setUser(null)
+    dispatch(logoutCurrentUser()) 
     setUsername('')
     setPassword('')
     blogService.setToken(null)
@@ -141,10 +118,10 @@ const App = () => {
       <Notification />
       <Menu />
 
-      {user === null ?
+      {currentUserFromRedux === null ?
         loginForm() :
         <div>
-          <p>{user.name} logged in</p>
+          <p>{currentUserFromRedux.name} logged in</p>
           <button id='logout' onClick={handleLogout}>logout</button>
           <Togglable buttonLabel='new note' ref={blogFormRef} >
             <BlogForm createBlog={addBlog} />
@@ -168,7 +145,6 @@ const App = () => {
           <Blog
             key={blog.id}
             blog={blog}
-            deleteBlog={deleteBlog}
           />
         )}
       </ul>

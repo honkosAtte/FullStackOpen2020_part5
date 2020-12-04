@@ -11,20 +11,16 @@ const blogReducer = (state = [], action) => {
         const blogToChange1 = state.find(n => n.id === blogid.toString())
         const changedBlog1 = { 
           ...blogToChange1, comments: blogToChange1.comments.concat(action.data.newComment) } 
-
         return state.map(blog =>
-          blog.id !== blogid ? blog : changedBlog1) //Tämä ei ole vielä valmis, pitää refreshata selain että toimii
+          blog.id !== blogid ? blog : changedBlog1)
       case 'INIT_BLOGS':
         return action.data
       case 'NEW_LIKE':
-        const id = action.data.blog.id
-        const blogToChange = state.find(n => n.id === id)
-        const changedBlog = { 
-          ...blogToChange, votes: blogToChange.votes +1 } 
-  
         return state.map(blog =>
-          blog.id !== id ? blog : changedBlog)
-        
+          blog.id !== action.data.blogId ? blog : action.data.updatedBlog)
+      case 'DELETE_BLOG':
+        const deleteId = action.data
+        return state.filter(blog => blog.id !== deleteId)
       default:
         return state
     }
@@ -40,14 +36,44 @@ export const addNewBlogREDUX = (newBlog) => {
   }
 }
 
-export const addNewBlogComment = (newBlog, id) => {
+export const addNewBlogComment = (comment, id) => {
   return async dispatch => {
-  const blogComment = await blogService.createComment(newBlog, id)
+  const blogComment = await blogService.createComment(comment, id)
   dispatch({
     type: 'NEW_BLOG_COMMENT',
     data: {newComment: blogComment, blogId: id}
   })
 }
+}
+
+export const addNewLikeForBlog = (newBlog, id) => {
+
+  const blogToUpdate = {
+    title: newBlog.title,
+    author: newBlog.author,
+    url: newBlog.url,
+    likes: newBlog.likes +1
+  }
+  return async dispatch => {
+  const updatedBlog = await blogService.update(blogToUpdate, id)
+  dispatch({
+    type: 'NEW_LIKE',
+    data: {updatedBlog: updatedBlog, blogId: id}
+  })
+}
+}
+
+
+
+export const setDeleteBlog = (id) => {
+  return async dispatch => {
+  const deleteOne = await blogService.deleteOne(id)
+
+  dispatch({
+    type: 'DELETE_BLOG',
+    data: id
+})
+  }
 }
 
 
@@ -63,4 +89,3 @@ export const initializeBlogs = () => {
   
 
   export default blogReducer
-//delete actiondispatcher myös
