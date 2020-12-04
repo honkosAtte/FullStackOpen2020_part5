@@ -141,7 +141,7 @@ const App = () => {
   </Route>
   <Route path='/'>
   <ul>
-        {blogsFromRedux.map((blog) =>
+        {blogsFromRedux.sort((a, b) => b.likes - a.likes).map((blog) =>
           <Blog
             key={blog.id}
             blog={blog}

@@ -14,7 +14,9 @@ import {
       const dispatch = useDispatch()
   
       const handleDelete = (event) => {
-        dispatch(setDeleteBlog(id))
+        if (window.confirm(`Delete this blog?`)) { 
+          dispatch(setDeleteBlog(id))
+        }
       } 
   
         return (
