@@ -1,0 +1,15 @@
+{
+  "name": "fullstackopen_part8",
+  "version": "1.0.0",
+  "description": "part8",
+  "main": "library-backend.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Atte Honkonen",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^2.19.0",
+    "graphql": "^15.4.0"
+  }
+}
