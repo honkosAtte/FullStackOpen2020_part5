@@ -17,10 +17,6 @@ const Authors = (props) => {
       editAuthor({  variables: { name: authorsName , setBornTo: Number(bornYear) } })
       setBornYear('')
       setAuthorsName('')
-      // if (authors.data.allAuthors.some(row => row.born === null)) {
-      //   console.log((authors.data.allAuthors.filter(row => row.born === null)[0].name))
-      //   setAuthorsName((authors.data.allAuthors.filter(row => row.born === null)[0].name))
-      // }
     }
 
   if (!props.show) {
@@ -31,12 +27,9 @@ const Authors = (props) => {
     return <div>loading...</div>
   }
   let doAllHaveABirthYear = true
-  
-  //Tässä pitäisi käyttää varmaan effecthookia, koska tämä ei selvästi toimi kunnolla
-  //Tai käyttää sitä tarjottua kirjastoa?
+
   if (!authors.loading) {
   doAllHaveABirthYear = !authors.data.allAuthors.some(row => row.name)
-  //setAuthorsName((authors.data.allAuthors.filter(row => row.born === null)[0].name))
   }
 
   return (
@@ -81,7 +74,6 @@ const Authors = (props) => {
       type='submit'
       disabled={authorsName==='' || bornYear.length < 1}
       >update born year</button>
-      {/* {authorsName==='' || bornYear.length < 4 ? <p style={{ color: 'red' }}>If you want to update birthyear, please select an author and add a 4-digit number</p>: null} */}
       </form>
       </>}
     </div>

@@ -174,28 +174,26 @@ const resolvers = {
 
       try {
         let author = await Author.findOne({ name: { $in: [args.author] } })
-
-        if (author.name !== args.author) {
+        console.log('authoori1', author)
+        if (author === null) {
         author = new Author({name: args.author})
         await author.save()
+        console.log('authoori2', author)
         }
  
-        book = new Book({
+        let book = new Book({
          title: args.title,
          published: args.published,
          author: author,
          genres: args.genres
         })
-        await book.save()
+        return await book.save()
         
       } catch (error) {
         throw new UserInputError(error.message, {
           invalidArgs: args,
         })
       }
-
-
-      return book
     },
   editAuthor: async (root, args, context) => {
 
