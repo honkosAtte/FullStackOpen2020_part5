@@ -70,3 +70,19 @@ mutation editBornYear($name: String!, $setBornTo: Int!) {
   }
 }
 `
+export const BOOK_ADDED = gql`  
+subscription { 
+bookAdded {
+  title 
+  published
+  author { 
+    name
+    born
+    id
+    bookCount
+  }
+  genres
+  id
+ }  
+}  
+ `
