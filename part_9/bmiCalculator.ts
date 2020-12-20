@@ -23,18 +23,18 @@ interface HeightAndWeight {
     const bmi = weight / (heightDividedBy100 * heightDividedBy100)
     console.log('bmi', bmi)
     if (bmi < 20) {
-        return 'underweight'
+        return 'Underweight'
     } else if (bmi >= 20 && bmi <=25) {
         return 'Normal (healthly weight)'
     } else {
-        return 'overweight'
+        return 'Overweight'
     }
   }
   
   try {
-    //const { value1, value2 } = parseArguments(process.argv);
-    //calculateBmi (value1, value2);
-    console.log(calculateBmi(180, 74))
+    const { height, weight } = parseArguments(process.argv);
+    console.log(calculateBmi (height, weight));
+    //console.log(calculateBmi(180, 74))
   } catch (e) {
     console.log('Error, something bad happened, message: ', e.message);
   }

@@ -1,5 +1,3 @@
-
-
 interface Results { 
     periodLength: number,
     trainingDays: number,
@@ -7,23 +5,27 @@ interface Results {
     rating: number,
     ratingDescription: string,
     target: number,
-    average: number };
+    average: number 
+};
 
-    // const parseArguments = (args: Array<string>): HeightAndWeight => {
-    //     if (args.length < 4) throw new Error('Not enough arguments');
-    //     if (args.length > 4) throw new Error('Too many arguments');
+    const parseArgumentsArray = (args: Array<string>): Array<number> => {
+        if (args.length < 3) throw new Error('Not enough arguments');
+        console.log('nolla', Number(0))
+        const arguments = args.slice(2);
+        console.log('arguments', arguments);
+        const argumentsAreNumbers = arguments.every(n => !isNaN(Number(n)));
+        console.log('argumentsAreNumbers', argumentsAreNumbers);
+       
+        if (argumentsAreNumbers) {
+            let days = Array<number>();
+            arguments.forEach(number => days.push(Number(number)));
+          return days;
+        } else {
+          throw new Error('Provided values were not numbers!');
+        }
+      }
       
-    //     if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
-    //       return {
-    //         height: Number(args[2]),
-    //         weight: Number(args[3])
-    //       }
-    //     } else {
-    //       throw new Error('Provided values were not numbers!');
-    //     }
-    //   }
-      
-const hardCodedWeekHours = [3, 0, 2, 4.5, 0, 3, 1];
+//const hardCodedWeekHours = [3, 0, 2, 4.5, 0, 3, 1];
 
       const calculateExercises  = (args: Array<number>): Results => {
 
@@ -42,7 +44,9 @@ const hardCodedWeekHours = [3, 0, 2, 4.5, 0, 3, 1];
       }
       
       try {
-        console.log(calculateExercises(hardCodedWeekHours))
+        const hoursGivenByUser = parseArgumentsArray(process.argv);
+
+        console.log(calculateExercises(hoursGivenByUser))
       } catch (e) {
         console.log('Error, something bad happened, message: ', e.message);
       }
