@@ -17,10 +17,10 @@ interface MultiplyValues {
     }
   }
   
-  const calculateBmi  = (a: number, b: number) : string => {
+  const calculateBmi  = (height: number, weight: number) : string => {
     
-    const divider = b/100
-    const bmi = a / (divider * divider)
+    const heightDividedBy100 = height/100
+    const bmi = weight / (heightDividedBy100 * heightDividedBy100)
     console.log('bmi', bmi)
     if (bmi < 20) {
         return 'underweight'
@@ -34,7 +34,7 @@ interface MultiplyValues {
   try {
     //const { value1, value2 } = parseArguments(process.argv);
     //calculateBmi (value1, value2);
-    console.log(calculateBmi(78,180))
+    console.log(calculateBmi(180, 74))
   } catch (e) {
     console.log('Error, something bad happened, message: ', e.message);
   }
