@@ -17,7 +17,7 @@ interface HeightAndWeight {
     }
   }
   
-  const calculateBmi  = (height: number, weight: number) : string => {
+  export const calculateBmi  = (height: number, weight: number) : string => {
     
     const heightDividedBy100 = height/100
     const bmi = weight / (heightDividedBy100 * heightDividedBy100)
