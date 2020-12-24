@@ -1,9 +1,9 @@
 import crypto from 'crypto';
 
-import patientData from '../data/patients.json';
-import { Patient, PatientWithoutSSN } from '../types';
+import patientEntries from '../data/patientsdata';
+import { Patient, PatientWithoutSSN, NewPatient } from '../types';
 
-let patients: Patient[] = patientData;
+let patients: Patient[] = patientEntries;
 
 export const getEntries = (): Patient[] => {
     return patients;
@@ -14,17 +14,14 @@ export const getEntriesWithNoSSN = (): PatientWithoutSSN[] => {
 };
 
 
-export const addEntry = ( name: string, dateOfBirth: string, ssn: string, gender: string, occupation: string ) : Patient => {
+export const addEntry = ( newPatient: NewPatient ) : Patient => {
 
-    const newPatient = {
+    const result = {
        id: crypto.randomBytes(20).toString('hex'),
-       name,
-       dateOfBirth,       ssn,
-       gender,
-       occupation
+        ...newPatient
    };
-   
-    patients = patients.concat(newPatient);
+   console.log('onko id', result);
+    patients = patients.concat(result);
 
-    return newPatient;
+    return result;
 };

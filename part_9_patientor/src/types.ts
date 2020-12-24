@@ -9,12 +9,17 @@ export type Patient = {
     name: string,
     dateOfBirth: string,
     ssn: string,
-    gender: string,
+    gender: Gender,
     occupation: string
 };
 
-// enum Gender {
-//     MALE, FEMALE, OTHER
-// }
+export enum Gender {
+    MALE = 'male', 
+    FEMALE = 'female', 
+    OTHER = 'other'
+}
 
 export type PatientWithoutSSN = Omit<Patient, 'ssn'>;
+
+export type NewPatient = Omit<Patient, 'id'>;
+
