@@ -1,5 +1,5 @@
 import express from 'express';
-import { getEntriesWithNoSSN } from '../services/patientService';
+import { getEntriesWithNoSSN, addEntry } from '../services/patientService';
 
 const router = express.Router();
 
@@ -9,8 +9,11 @@ router.get('/', (_req, res) => {
   res.send(result);
 });
 
-// router.post('/', (_req, res) => {
-//   res.send('Saving a patient!');
-// })
+router.post('/', (req, res) => {
+const { name, dateOfBirth, ssn, gender, occupation } = req.body;  
+const newPatient = addEntry(name, dateOfBirth, ssn, gender, occupation);
+
+  res.json(newPatient);
+})
 
 export default router;
