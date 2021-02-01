@@ -9,6 +9,11 @@ export const getEntries = (): Patient[] => {
     return patients;
 };
 
+export const getPatientById = (id: string): Patient => {
+    const patient = patients.find(row => row.id === id);
+    return patient as Patient;
+}
+
 export const getEntriesWithNoSSN = (): PublicPatient[] => {
     return patients.map(({id, name, dateOfBirth, gender, occupation}) => ({id, name, dateOfBirth, gender, occupation, entries: []}));
 };

@@ -1,12 +1,17 @@
 import express from 'express';
 import toNewPatient from '../utils';
-import { getEntriesWithNoSSN, addEntry } from '../services/patientService';
+import { getEntriesWithNoSSN, addEntry, getPatientById } from '../services/patientService';
 
 const router = express.Router();
 
 router.get('/', (_req, res) => {
   const result = getEntriesWithNoSSN();
   res.send(result);
+});
+
+router.get('/:id', (req, res) => {
+const result = getPatientById(req.params.id);
+res.send(result);
 });
 
 router.post('/', (req, res) => {
