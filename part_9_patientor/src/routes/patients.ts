@@ -11,12 +11,10 @@ router.get('/', (_req, res) => {
 
 router.get('/:id', (req, res) => {
 const result = getPatientById(req.params.id);
-console.log('resultti', result);
 res.send(result);
 });
 
 router.post('/', (req, res) => {
-//const { name, dateOfBirth, ssn, gender, occupation } = req.body; 
 const newEntry = toNewPatient(req.body);
 
 const result = addEntry(newEntry);

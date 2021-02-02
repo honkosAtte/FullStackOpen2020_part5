@@ -1,15 +1,18 @@
 import React, { useEffect } from 'react';
 import { useStateValue } from '../state';
 // import { Modal, Segment } from 'semantic-ui-react';
-import { Gender, Patient } from '../types';
+import { Patient } from '../types';
 import { useParams } from "react-router-dom";
 import { apiBaseUrl } from '../constants';
 import axios from 'axios';
+import { Icon } from 'semantic-ui-react';
 
 
-interface Props {
-  patient: Patient;
-}
+const genderIconOps = {
+  male: { name: "mars" as "mars", color: "grey" as "grey" },
+  female: { name: "venus" as "venus", color: "grey" as "grey" },
+  other: { name: "genderless" as "genderless", color: "grey" as "grey" },
+};
 
 const PatientInfoPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -34,7 +37,7 @@ const PatientInfoPage: React.FC = () => {
 
   return (
     <>
-      {patient ? <>  <h3>{patient.name} </h3>
+      {patient ? <>  <h3>{patient.name} <Icon {...genderIconOps[patient.gender]} /></h3>
         <p>gender: {patient.gender}</p>
         <p>ssn: {patient.ssn}</p>
         <p>occupation: {patient.occupation}</p></> : <p>PATIENT NOT FOUND</p>}
