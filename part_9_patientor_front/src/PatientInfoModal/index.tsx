@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useStateValue } from '../state';
+import { useStateValue, setUpdatePatient } from '../state';
 // import { Modal, Segment } from 'semantic-ui-react';
 import { Patient } from '../types';
 import { useParams } from "react-router-dom";
@@ -27,7 +27,7 @@ const PatientInfoPage: React.FC = () => {
       try {
         const { data: oldPatient } = await axios.get<Patient>(
           `${apiBaseUrl}/patients/${id}`);
-        dispatch({ type: "GET_PATIENT_BY_ID", payload: oldPatient as Patient });
+        dispatch(setUpdatePatient(oldPatient));
       } catch (error) {
         console.error('Something went wrong');
       }

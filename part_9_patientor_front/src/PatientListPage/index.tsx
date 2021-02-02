@@ -4,11 +4,10 @@ import { Container, Table, Button } from "semantic-ui-react";
 
 import { PatientFormValues } from "../AddPatientModal/AddPatientForm";
 import AddPatientModal from "../AddPatientModal";
-import PatientInfoPage from "../PatientInfoModal";
-import { Gender, Patient } from "../types";
+import { Patient } from "../types";
 import { apiBaseUrl } from "../constants";
 import HealthRatingBar from "../components/HealthRatingBar";
-import { useStateValue } from "../state";
+import { useStateValue, setAddPatient } from "../state";
 import { Link } from "react-router-dom";
 
 const PatientListPage: React.FC = () => {
@@ -34,7 +33,7 @@ const PatientListPage: React.FC = () => {
         `${apiBaseUrl}/patients`,
         values
       );
-      dispatch({ type: "ADD_PATIENT", payload: newPatient });
+      dispatch(setAddPatient(newPatient));
       closeSubmitModal();
     } catch (e) {
       console.error(e.response.data);
