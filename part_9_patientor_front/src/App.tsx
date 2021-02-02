@@ -11,7 +11,7 @@ import PatientListPage from "./PatientListPage";
 import PatientInfoPage from "./PatientInfoModal";
 
 const App: React.FC = () => {
-  const [{ patients }, dispatch] = useStateValue();
+  const [ , dispatch] = useStateValue();
   React.useEffect(() => {
     axios.get<void>(`${apiBaseUrl}/ping`);
 

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { NewPatient, Gender } from './types';
+import { NewPatient, Gender, Entry, EntryType } from './types';
 
 
 const isString = (text: any): text is string => {
@@ -41,6 +41,17 @@ const parseText = (text: any): string => {
     return gender;
   };
 
+  const parseEntryType = (entry: any): Entry[] => {
+    const e = entry as Entry[];
+    e.map(entry => {
+      if (!Object.values(EntryType).toString().includes(entry.type)) {
+        throw new Error('Incorrect or missing type: ' + entry);
+      }
+    });
+
+
+    return entry;
+  };
 
 const toNewPatient = (object: any): NewPatient => {
   return {
@@ -49,7 +60,7 @@ const toNewPatient = (object: any): NewPatient => {
    ssn: parseText(object.ssn),
    gender: parseGender(object.gender),
    occupation: parseText(object.occupation),
-   entries: []
+   entries: parseEntryType(object.entries)
   };
 };
 

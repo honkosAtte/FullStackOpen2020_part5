@@ -15,7 +15,7 @@ export const getPatientById = (id: string): Patient => {
 }
 
 export const getEntriesWithNoSSN = (): PublicPatient[] => {
-    return patients.map(({id, name, dateOfBirth, gender, occupation}) => ({id, name, dateOfBirth, gender, occupation, entries: []}));
+    return patients.map(({id, name, dateOfBirth, gender, occupation, entries}) => ({id, name, dateOfBirth, gender, occupation, entries}));
 };
 
 
