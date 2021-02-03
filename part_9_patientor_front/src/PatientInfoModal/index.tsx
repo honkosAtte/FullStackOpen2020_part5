@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { useStateValue, setUpdatePatient } from '../state';
+import { useStateValue, setUpdatePatient, setDiagnosesList } from '../state';
 // import { Modal, Segment } from 'semantic-ui-react';
-import { Patient } from '../types';
+import { Diagnosis, Patient } from '../types';
 import { useParams } from "react-router-dom";
 import { apiBaseUrl } from '../constants';
 import axios from 'axios';
@@ -16,10 +16,23 @@ const genderIconOps = {
 
 const PatientInfoPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [{ patients }, dispatch] = useStateValue();
+  const [{ patients, diagnoses }, dispatch] = useStateValue();
   const patient = patients[id];
-
   useEffect(() => {
+    const fetchDiagnosesList = async () => {
+      try {
+        const { data: diagnosesListFromApi } = await axios.get<Diagnosis[]>(
+          `${apiBaseUrl}/diagnoses`
+        );
+        dispatch(setDiagnosesList(diagnosesListFromApi));
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    if (Object.values(diagnoses).length < 1) {
+      fetchDiagnosesList();
+    }
+
     if (Object.values(patients).find(row => row.id === id)?.ssn) {
       return;
     }
@@ -33,7 +46,7 @@ const PatientInfoPage: React.FC = () => {
       }
     };
     getPatientWithSsnInfo();
-  }, []);
+  }, [dispatch, diagnoses, id, patients]);
 
   return (
     <>
@@ -43,13 +56,15 @@ const PatientInfoPage: React.FC = () => {
         <p>occupation: {patient.occupation}</p>
         <div>
           <h4>entries</h4>
-        {patient.entries.map(entry => 
-        <ul key={entry.id}>{entry.date} <i>{entry.description}</i> 
-        {entry.diagnosisCodes?.map(code => <li>{code}</li>)} </ul>)}
+          {patient.entries.map(entry =>
+            <ul key={entry.id}>{entry.date} <i>{entry.description}</i>
+              {entry.diagnosisCodes?.map(code => <ul key={code}>{Object.values(diagnoses).filter(row => row.code === code).map(row => <li key={row.name}>{row.code} {row.name}</li>)}</ul>)}</ul>
+          )
 
+          }
         </div>
-        
-        </> : <p>PATIENT NOT FOUND</p>}
+
+      </> : <p>PATIENT NOT FOUND</p>}
 
     </>
   );
