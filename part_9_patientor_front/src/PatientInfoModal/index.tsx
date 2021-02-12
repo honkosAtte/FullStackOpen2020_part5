@@ -7,6 +7,7 @@ import { apiBaseUrl } from '../constants';
 import axios from 'axios';
 import { Icon } from 'semantic-ui-react';
 
+import EntrySwitch from './EntrySwitch'
 
 const genderIconOps = {
   male: { name: "mars" as "mars", color: "grey" as "grey" },
@@ -57,8 +58,7 @@ const PatientInfoPage: React.FC = () => {
         <div>
           <h4>entries</h4>
           {patient.entries.map(entry =>
-            <ul key={entry.id}>{entry.date} <i>{entry.description}</i>
-              {entry.diagnosisCodes?.map(code => <ul key={code}>{Object.values(diagnoses).filter(row => row.code === code).map(row => <li key={row.name}>{row.code} {row.name}</li>)}</ul>)}</ul>
+            <ul key={entry.id}><EntrySwitch entry={entry} /></ul>
           )
 
           }
