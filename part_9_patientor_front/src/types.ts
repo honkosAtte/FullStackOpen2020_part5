@@ -71,3 +71,12 @@ export interface Patient {
   dateOfBirth?: string;
   entries: Entry[];
 }
+
+
+type DistributiveOmit<T, K extends keyof any> = T extends any
+  ? Omit<T, K>
+  : never;
+
+export type NewBaseEntry = Omit<Entry, "id">;
+
+export type NewEntry = DistributiveOmit<Entry, "id">;

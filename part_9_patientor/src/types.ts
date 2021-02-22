@@ -5,11 +5,12 @@ export type Diagnose = {
 };
 
 interface BaseEntry {
+  type: EntryType;
   id: string;
   description: string;
   date: string;
   specialist: string;
-  diagnosisCodes?: string[];
+  diagnosisCodes?: Array<Diagnose["code"]>;
 }
 
 export enum HealthCheckRating {
@@ -20,27 +21,27 @@ export enum HealthCheckRating {
 }
 
 interface HealthCheckEntry extends BaseEntry {
-  type: "HealthCheck";
+  type: EntryType.HealthCheck;
   healthCheckRating: HealthCheckRating;
 }
 
-interface Discharge  {
+export interface Discharge  {
   date: string;
   criteria: string;
 }
 
 interface HospitalEntry extends BaseEntry {
-  type: "Hospital";
+  type: EntryType.Hospital;
   discharge: Discharge;
 }
 
-interface Sickleave  {
+export interface Sickleave  {
   startDate: string;
   endDate: string;
 }
 
 interface OccupationalHealthcareEntry extends BaseEntry {
-  type: "OccupationalHealthcare";
+  type: EntryType.OccupationalHealthCare;
   employerName: string;
   sickLeave?: Sickleave;
 }
@@ -76,3 +77,11 @@ export interface Patient {
   entries: Entry[]}
 
 export type PublicPatient = Omit<Patient, 'ssn' | 'entries' >;
+
+type DistributiveOmit<T, K extends keyof any> = T extends any
+  ? Omit<T, K>
+  : never;
+
+export type NewBaseEntry = Omit<Entry, "id">;
+
+export type NewEntry = DistributiveOmit<Entry, "id">;

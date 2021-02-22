@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 
 import patientEntries from '../data/patientsdata';
-import { Patient, PublicPatient, NewPatient } from '../types';
+import { Patient, PublicPatient, NewPatient, NewEntry, Entry } from '../types';
 
 let patients: Patient[] = patientEntries;
 
@@ -19,7 +19,7 @@ export const getEntriesWithNoSSN = (): PublicPatient[] => {
 };
 
 
-export const addEntry = ( newPatient: NewPatient ) : Patient => {
+export const addPatient = ( newPatient: NewPatient ) : Patient => {
 
     const result = {
        id: crypto.randomBytes(20).toString('hex'),
@@ -30,3 +30,16 @@ export const addEntry = ( newPatient: NewPatient ) : Patient => {
 
     return result;
 };
+
+export const addEntryForPatient = (patient: Patient, newEntry: NewEntry): Patient => {
+    const entry: Entry = { ...newEntry, id: crypto.randomBytes(20).toString('hex') };
+    const updatedPatient = { ...patient, entries: patient.entries.concat(entry) };
+    
+    patients = patients.map((patient) =>
+      patient.id === updatedPatient.id ? updatedPatient : patient
+    );
+  
+    return updatedPatient;
+  };
+  
+  
